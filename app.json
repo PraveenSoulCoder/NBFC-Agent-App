@@ -18,10 +18,20 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.joel_renambl.MyKaasuAgent"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "expo-font",
+      "sentry-expo"
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "893fc5e3-8187-486c-bce0-1f40a5d1cc64"
+      }
     }
   }
 }

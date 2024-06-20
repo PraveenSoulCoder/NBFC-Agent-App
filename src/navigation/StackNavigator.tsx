@@ -12,11 +12,7 @@ const Stack = createStackNavigator();
 
 const StackNavigator: React.FC = ({ }: any) => {
   const navigation: any = useNavigation();
-  const [expoPushToken, setExpoPushToken] = useState<string>("");
-  const [notification, setNotification] = useState<boolean>(false);
-  const [hasPermission, setHasPermission] = useState(null);
-  const notificationListener: any = useRef();
-  const responseListener: any = useRef();
+
 
 
   const [initialScreen, setInitialScreen] = useState<any>(null);
@@ -57,7 +53,7 @@ const StackNavigator: React.FC = ({ }: any) => {
 
   return (
     <Stack.Navigator
-      initialRouteName={"LoadingScreen"}
+      initialRouteName={initialScreen}
       screenOptions={{
         gestureEnabled: false,
         cardStyle: { backgroundColor: "white" },
@@ -98,17 +94,11 @@ const StackNavigator: React.FC = ({ }: any) => {
         options={{ headerShown: false, headerLeft: () => null }}
       />
 
-      {/* <Stack.Screen
-        name="TabNavigator"
-        component={TabNavigator}
-        options={{ headerShown: false }}
-      /> */}
       <Stack.Screen
         name="Profile"
         component={screens.Profile}
         options={{ headerShown: false, gestureEnabled: true, gestureDirection: "horizontal" }}
       />
-
 
       <Stack.Screen
         name="FileCapture"

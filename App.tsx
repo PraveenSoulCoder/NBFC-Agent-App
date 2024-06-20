@@ -22,41 +22,43 @@ LogBox.ignoreLogs(["Sending"]);
 
 const App: React.FC = () => {
     const [netinfos, setnetinfos] = useState(false);
-    const [loading, setLoading] = useState(true);
+
     let [fontsLoaded] = useFonts({
         Mulish_400Regular,
         Mulish_500Medium,
         Mulish_600SemiBold,
         Mulish_700Bold,
     });
-useEffect(()=>{
-setnetinfos(false);
-},[])
+
+
+    useEffect(() => {
+        setnetinfos(false);
+    }, [])
+
     useEffect(() => {
         const data = NetInfo.addEventListener((state) => {
-          const offline = !(state?.isConnected && state?.isInternetReachable);
-          setnetinfos(state.isInternetReachable == null? true : 
-            state.isInternetReachable);
+            const offline = !(state?.isConnected && state?.isInternetReachable);
+            setnetinfos(state.isInternetReachable == null ? true :
+                state.isInternetReachable);
         });
-    
-        return () => {
-          data();
-        };
-      }, []);
-    if (fontsLoaded) {
-        return netinfos?(
-            <NavigationContainer>
-                
-      
-                        <SafeAreaProvider>
-                        <Provider store={store}>
-                            <StackNavigator />
-                        </Provider>
-                    </SafeAreaProvider>    
 
-                
+        return () => {
+            data();
+        };
+    }, []);
+
+    if (fontsLoaded) {
+        return netinfos ? (
+            <NavigationContainer>
+                <SafeAreaProvider>
+                    <Provider store={store}>
+                        <StackNavigator />
+                    </Provider>
+                </SafeAreaProvider>
+
+
             </NavigationContainer>
-        ):(<NavigationContainer><MessageBox/></NavigationContainer>);
+        ) : (<NavigationContainer><MessageBox /></NavigationContainer>);
     } else {
         return (
             <LoadingBox></LoadingBox>

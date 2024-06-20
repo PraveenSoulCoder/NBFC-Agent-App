@@ -113,7 +113,7 @@ const Login: React.FC = ({ navigation, route }: any) => {
       await AsyncStorage.setItem("roleId", roleId);
       await AsyncStorage.setItem("apikey", apiKey);
       await AsyncStorage.setItem("userName", userName);
-      navigation.navigate("Home1");
+      navigation.replace("Home1");
     } catch (e) {
       // saving error
     }

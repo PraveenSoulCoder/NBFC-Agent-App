@@ -6,7 +6,7 @@ import * as Location from 'expo-location';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Modal } from "react-native";
 import RadioButton from "../components/RadioButton";
-import { useNavigationState } from '@react-navigation/native';
+import { useBackHandler } from "../components/ExitConfirmationModal";
 
 
 const windowWidth = Dimensions.get('window').width;
@@ -14,6 +14,7 @@ const windowHeight = Dimensions.get('window').height;
 
 
 const Home1 = ({ navigation, route }: { navigation: any, route: any }) => {
+    useBackHandler();
 
     const [searchPhone, setSearchPhone] = useState("");
     const [isFocused, setIsFocused] = useState(false);
@@ -46,27 +47,27 @@ const Home1 = ({ navigation, route }: { navigation: any, route: any }) => {
     );
 
 
-    const [backPressCount, setBackPressCount] = useState(0);
+//     const [backPressCount, setBackPressCount] = useState(0);
 
-  useEffect(() => {
-    const backAction = () => {
-      if (backPressCount === 0) {
-        setBackPressCount(backPressCount + 1);
-        ToastAndroid.show('Press back again to exit', ToastAndroid.SHORT);
+//   useEffect(() => {
+//     const backAction = () => {
+//       if (backPressCount === 0) {
+//         setBackPressCount(backPressCount + 1);
+//         ToastAndroid.show('Press back again to exit', ToastAndroid.SHORT);
 
-        setTimeout(() => setBackPressCount(0), 2000);
+//         setTimeout(() => setBackPressCount(0), 2000);
 
-        return true;
-      } else if (backPressCount === 1) {
-        BackHandler.exitApp();
-      }
-      return false;
-    };
+//         return true;
+//       } else if (backPressCount === 1) {
+//         BackHandler.exitApp();
+//       }
+//       return false;
+//     };
 
-    const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction);
+//     const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction);
 
-    return () => backHandler.remove();
-  }, [backPressCount]);
+//     return () => backHandler.remove();
+//   }, [backPressCount]);
 
 
     useEffect(() => {

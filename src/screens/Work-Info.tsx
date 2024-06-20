@@ -231,7 +231,7 @@ const Work_Info = ({ navigation, route }: { navigation: any, route: any }) => {
                         <Text style={{ ...theme.FONTS.Mulish_600SemiBold }}>Company Id Photo </Text>
 
                         <View style={{ width: "100%", color: theme.COLORS.bodyTextColor, overflow: "hidden", backgroundColor: theme.COLORS.white, borderRadius: 10, marginTop: 10, borderWidth: 0.5, borderColor: theme.COLORS.primary }}>
-                            <Text style={{ textAlign: "center", padding: 8, ...theme.FONTS.Mulish_700Bold, color: theme.COLORS.white, backgroundColor: theme.COLORS.primary }}>Id Photo</Text>
+                            <Text style={{ textAlign: "center", padding: 8, ...theme.FONTS.Mulish_700Bold, color: theme.COLORS.white, backgroundColor: theme.COLORS.primary }}>Id Image</Text>
                             {isPdf ? (
                                 <TouchableOpacity onPress={handlePress} style={{ width: '100%', height: 200, justifyContent: 'center', alignItems: 'center' }}>
                                     <Image source={require('../assets/icons/pdf.png')} style={{ width: 100, height: 100, marginBottom: 15 }} />
@@ -248,7 +248,7 @@ const Work_Info = ({ navigation, route }: { navigation: any, route: any }) => {
                     </View>
 
                     <View style={{ marginBottom: 15 }}>
-                        <Text style={{ ...theme.FONTS.Mulish_600SemiBold }}>Compay Photo </Text>
+                        <Text style={{ ...theme.FONTS.Mulish_600SemiBold }}>Company Photo </Text>
                         <TouchableOpacity onPress={() => getCameraPermission("companyPhoto")} style={{ width: "100%", color: theme.COLORS.bodyTextColor, overflow: "hidden", backgroundColor: theme.COLORS.white, borderRadius: 10, marginTop: 10, borderWidth: 0.5, borderColor: theme.COLORS.primary }}>
                             <Text style={{ textAlign: "center", padding: 8, ...theme.FONTS.Mulish_700Bold, color: theme.COLORS.white, backgroundColor: theme.COLORS.primary }}>Company Image</Text>
                             {workDetails.companyPhoto ?
@@ -261,8 +261,8 @@ const Work_Info = ({ navigation, route }: { navigation: any, route: any }) => {
                         </TouchableOpacity>
                     </View>
 
-                    <View style={{ marginBottom: 30 }}>
-                        <Text style={{ ...theme.FONTS.Mulish_600SemiBold }}>Compay Current Location </Text>
+                    <View style={{ marginBottom: 50 }}>
+                        <Text style={{ ...theme.FONTS.Mulish_600SemiBold }}>Company Current Location </Text>
                         <TouchableOpacity onPress={() => getCurrentLocation()} style={{ width: "100%", color: theme.COLORS.bodyTextColor, overflow: "hidden", backgroundColor: theme.COLORS.white, borderRadius: 10, marginTop: 10, borderWidth: 0.5, borderColor: theme.COLORS.primary }}>
                             <Text style={{ textAlign: "center", padding: 8, ...theme.FONTS.Mulish_700Bold, color: theme.COLORS.white, backgroundColor: theme.COLORS.primary }}>Location Cordinates</Text>
                             {locationtrigger? 
@@ -282,8 +282,8 @@ const Work_Info = ({ navigation, route }: { navigation: any, route: any }) => {
 
                     </View>
 
-                    <TouchableOpacity disabled={!verifyWork} style={{ backgroundColor: theme.COLORS.primary, opacity: verifyWork ? 1 : 0.5, borderRadius: 15, alignSelf: 'flex-end', width: "50%", marginBottom: 20, paddingVertical: 7 }} onPress={notesModalHandler}>
-                        <Text style={{ textAlign: "center", padding: 8, ...theme.FONTS.Mulish_700Bold, fontSize: 20, color: theme.COLORS.white }}> {workDetails.companyLat && workDetails.companyLon && workDetails.companyPhoto ? "Update" : "Verify"}</Text>
+                    <TouchableOpacity disabled={!verifyWork} style={{ backgroundColor: theme.COLORS.primary, opacity: verifyWork ? 1 : 0.5, borderRadius: 15, alignSelf: 'flex-end', width: "50%", marginBottom: 20, paddingVertical: 10 }} onPress={notesModalHandler}>
+                        <Text style={{ textAlign: "center", ...theme.FONTS.Mulish_700Bold, fontSize: 15, color: theme.COLORS.white }}> {workDetails.companyLat && workDetails.companyLon && workDetails.companyPhoto ? "Update" : "Verify"}</Text>
                     </TouchableOpacity>
 
                     <View style={{ marginBottom: 15 }}>

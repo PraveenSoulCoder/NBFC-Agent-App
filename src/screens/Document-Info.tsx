@@ -195,20 +195,18 @@ const Document_Info = ({ navigation, route }: { navigation: any, route: any }) =
                         </TouchableOpacity>
                     </View>
 
-                    <View style={{ marginBottom: 15 }}>
-                        <Text style={{ ...theme.FONTS.Mulish_600SemiBold }}>Aggreement Photo </Text>
+                    <View style={{ marginBottom: 50 }}>
+                        <Text style={{ ...theme.FONTS.Mulish_600SemiBold }}>Agreement Photo </Text>
                         <View style={{ width: "100%", color: theme.COLORS.bodyTextColor, overflow: "hidden", backgroundColor: theme.COLORS.white, borderRadius: 10, marginTop: 10, borderWidth: 0.5, borderColor: theme.COLORS.primary }}>
-                            <Text style={{ textAlign: "center", padding: 8, ...theme.FONTS.Mulish_700Bold, color: theme.COLORS.white, backgroundColor: theme.COLORS.primary }}>Aggreement Image</Text>
-                            {console.log("has agreement :", documentDetails.agreementPhoto)}
+                            <Text style={{ textAlign: "center", padding: 8, ...theme.FONTS.Mulish_700Bold, color: theme.COLORS.white, backgroundColor: theme.COLORS.primary }}>Agreement Image</Text>
                             {hasAgreementPhoto ?
-                                // {console.log("has agreement :",documentDetails.agreementPhoto)}?
                                 <>
-                                    <View style={{ flex: 1, flexDirection: "row", gap: 8, alignItems: "center", justifyContent: "center", width: "100%", flexWrap: "wrap" }}>
+                                    <View style={{flexDirection: "row", alignItems: "center", justifyContent: "center", width: "100%", flexWrap: "wrap",marginTop: 10 }}>
                                         {documentDetails.agreementPhoto.map((item, index) => {
                                             return (
-                                                <TouchableOpacity onPress={() => photoOpen(item)} key={index} style={{ width: "30%", height: 110, justifyContent: "center", position: "relative", marginTop: 20 }}>
+                                                <TouchableOpacity onPress={() => photoOpen(item)} key={index} style={{ width: "45%", height: 155, justifyContent: "center", position: "relative", marginTop: 20 }}>
                                                     <Image key={index} source={{ uri: item }} style={{ width: "100%", height: "100%", objectFit: "contain", borderRadius: 10 }} />
-                                                    <TouchableOpacity style={{ position: "absolute", top: -3, right: -3 }} onPress={() => removeAgreementPhoto(index)}>
+                                                    <TouchableOpacity style={{ position: "absolute", top: -8, right: 0 }} onPress={() => removeAgreementPhoto(index)}>
                                                         <Image source={require('../assets/icons/remove.png')} style={{ width: 20, height: 20, }} />
                                                     </TouchableOpacity>
                                                 </TouchableOpacity>
@@ -216,7 +214,7 @@ const Document_Info = ({ navigation, route }: { navigation: any, route: any }) =
                                         })}
                                     </View>
                                     <TouchableOpacity onPress={() => getCameraPermission("agreementPhoto")}>
-                                        <Text style={{ textAlign: "center", padding: 8, borderRadius: 10, margin: 10, ...theme.FONTS.Mulish_700Bold, color: theme.COLORS.white, backgroundColor: theme.COLORS.primary, marginTop: 10, width: "50%", alignSelf: "flex-end", fontSize: 12 }}>Add More Page</Text>
+                                        <Text style={{ textAlign: "center",paddingVertical: 8, borderRadius: 10, margin: 10, ...theme.FONTS.Mulish_700Bold, color: theme.COLORS.white, backgroundColor: theme.COLORS.primary, marginTop: 10,width:"40%", alignSelf: "flex-end", fontSize: 12 }}>Add More Page</Text>
                                     </TouchableOpacity>
                                 </>
                                 :
@@ -231,8 +229,8 @@ const Document_Info = ({ navigation, route }: { navigation: any, route: any }) =
                     </View>
 
 
-                    <TouchableOpacity disabled={!verifyDocument} style={{ backgroundColor: theme.COLORS.primary, opacity: verifyDocument ? 1 : 0.5, borderRadius: 15, alignSelf: 'flex-end', width: "50%", marginBottom: 20, paddingVertical: 7 }} onPress={notesModalHandler}>
-                        <Text style={{ textAlign: "center", padding: 8, ...theme.FONTS.Mulish_700Bold, fontSize: 20, color: theme.COLORS.white }}>{documentDetails.panPhoto && documentDetails.aadhaarPhoto ? "Update" : "Verify"}</Text>
+                    <TouchableOpacity disabled={!verifyDocument} style={{ backgroundColor: theme.COLORS.primary, opacity: verifyDocument ? 1 : 0.5, borderRadius: 15, alignSelf: 'flex-end', width: "50%", marginBottom: 20, paddingVertical: 10 }} onPress={notesModalHandler}>
+                        <Text style={{ textAlign: "center", ...theme.FONTS.Mulish_700Bold, fontSize: 15, color: theme.COLORS.white }}>{documentDetails.panPhoto && documentDetails.aadhaarPhoto ? "Update" : "Verify"}</Text>
                     </TouchableOpacity>
 
                     <View style={{ marginBottom: 15 }}>

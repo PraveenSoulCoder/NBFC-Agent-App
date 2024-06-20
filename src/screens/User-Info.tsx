@@ -162,6 +162,8 @@ const User_Info = ({ navigation, route }: { navigation: any, route: any }) => {
 
             let location = await Location.getCurrentPositionAsync({});
 
+            console.log("location",location);
+
             const userLat = location.coords.latitude;
             const userLon = location.coords.longitude;
 
@@ -297,10 +299,6 @@ const User_Info = ({ navigation, route }: { navigation: any, route: any }) => {
                         <Text style={{ width: "100%", color: theme.COLORS.bodyTextColor, backgroundColor: theme.COLORS.white, padding: 15, borderRadius: 10, marginTop: 10, borderWidth: 0.5, borderColor: theme.COLORS.primary }}>{userDetails.userNationality}</Text>
                     </View>
                     <View style={{ marginBottom: 15 }}>
-                        <Text style={{ ...theme.FONTS.Mulish_600SemiBold }}>User Nationality </Text>
-                        <Text style={{ width: "100%", color: theme.COLORS.bodyTextColor, backgroundColor: theme.COLORS.white, padding: 15, borderRadius: 10, marginTop: 10, borderWidth: 0.5, borderColor: theme.COLORS.primary }}>{userDetails.userNationality}</Text>
-                    </View>
-                    <View style={{ marginBottom: 15 }}>
                         <Text style={{ ...theme.FONTS.Mulish_600SemiBold }}>User Utility Bill </Text>
                         <View style={{ width: "100%", color: theme.COLORS.bodyTextColor, overflow: "hidden", backgroundColor: theme.COLORS.white, borderRadius: 10, marginTop: 10, borderWidth: 0.5, borderColor: theme.COLORS.primary }}>
                             <Text style={{ textAlign: "center", padding: 8, ...theme.FONTS.Mulish_700Bold, color: theme.COLORS.white, backgroundColor: theme.COLORS.primary }}>{userDetails.utilityBillType}</Text>
@@ -356,7 +354,7 @@ const User_Info = ({ navigation, route }: { navigation: any, route: any }) => {
                         </TouchableOpacity>
                     </View>
 
-                    <View style={{ marginBottom: 30 }}>
+                    <View style={{ marginBottom: 50 }}>
                         <Text style={{ ...theme.FONTS.Mulish_600SemiBold }}>User Current Location </Text>
                         <TouchableOpacity onPress={() => getCurrentLocation()} style={{ width: "100%", color: theme.COLORS.bodyTextColor, overflow: "hidden", backgroundColor: theme.COLORS.white, borderRadius: 10, marginTop: 10, borderWidth: 0.5, borderColor: theme.COLORS.primary }}>
                             <Text style={{ textAlign: "center", padding: 8, ...theme.FONTS.Mulish_700Bold, color: theme.COLORS.white, backgroundColor: theme.COLORS.primary }}>Location Cordinates</Text>
@@ -387,8 +385,8 @@ const User_Info = ({ navigation, route }: { navigation: any, route: any }) => {
                     </View>
 
 
-                    <TouchableOpacity disabled={!verifyUser} style={{ backgroundColor: theme.COLORS.primary, opacity: verifyUser ? 1 : 0.5, borderRadius: 15, alignSelf: 'flex-end', width: "50%", marginBottom: 20, paddingVertical: 7 }} onPress={notesModalHandler}>
-                        <Text style={{ textAlign: "center", padding: 8, ...theme.FONTS.Mulish_700Bold, fontSize: 20, color: theme.COLORS.white }}>{userDetails.houseLat && userDetails.houseLon && userDetails.userPicture && userDetails.housePhoto ? "Update" : "Verify"}</Text>
+                    <TouchableOpacity disabled={!verifyUser} style={{ backgroundColor: theme.COLORS.primary, opacity: verifyUser ? 1 : 0.5, borderRadius: 15, alignSelf: 'flex-end', width: "50%", marginBottom: 20, paddingVertical: 10, }} onPress={notesModalHandler}>
+                        <Text style={{ textAlign: "center", ...theme.FONTS.Mulish_700Bold, fontSize: 15, color: theme.COLORS.white }}>{userDetails.houseLat && userDetails.houseLon && userDetails.userPicture && userDetails.housePhoto ? "Update" : "Verify"}</Text>
                     </TouchableOpacity>
 
                     <View style={{ marginBottom: 15 }}>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { View, Text, Dimensions, TouchableOpacity, Image, TextInput, Keyboard, ToastAndroid, ScrollView } from "react-native";
+import { View, Text, Dimensions, TouchableOpacity, Image, TextInput, Keyboard, ToastAndroid, BackHandler } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { theme } from "../constants/theme";
 import * as Location from 'expo-location';
@@ -46,13 +46,34 @@ const Home1 = ({ navigation, route }: { navigation: any, route: any }) => {
     );
 
 
-    // useEffect
+    const [backPressCount, setBackPressCount] = useState(0);
+
+  useEffect(() => {
+    const backAction = () => {
+      if (backPressCount === 0) {
+        setBackPressCount(backPressCount + 1);
+        ToastAndroid.show('Press back again to exit', ToastAndroid.SHORT);
+
+        setTimeout(() => setBackPressCount(0), 2000);
+
+        return true;
+      } else if (backPressCount === 1) {
+        BackHandler.exitApp();
+      }
+      return false;
+    };
+
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction);
+
+    return () => backHandler.remove();
+  }, [backPressCount]);
+
 
     useEffect(() => {
         async function getasync() {
             try {
                 const userName = await AsyncStorage.getItem('userName');
-                 console.log("userName", userName)
+                console.log("userName", userName)
                 if (userName !== null) {
                     setUserName(userName);
                 }
@@ -74,21 +95,21 @@ const Home1 = ({ navigation, route }: { navigation: any, route: any }) => {
         getLocationPermission();
     }, []);
 
-    useEffect(() => {
-        const unsubscribe = navigation.addListener("focus", () => {
-            if (searchPhone.length === 10) {
-                console.log("navigation listener is working")
-                getDetails();
-            } else {
-                console.log("search phone length is not 10:", searchPhone)
-            }
-        });
+    // useEffect(() => {
+    //     const unsubscribe = navigation.addListener("focus", () => {
+    //         if (searchPhone.length === 10) {
+    //             console.log("navigation listener is working")
+    //             getDetails();
+    //         } else {
+    //             console.log("search phone length is not 10:", searchPhone)
+    //         }
+    //     });
 
-        // return unsubscribe;
-    }, [navigation]);
+    //     return unsubscribe;
+    // }, [navigation]);
 
     useEffect(() => {
-        console.log("route listener is working")
+        console.log("route listener is working",searchPhone)
         if (searchPhone.length === 10) {
             getDetails();
         }
@@ -118,7 +139,7 @@ const Home1 = ({ navigation, route }: { navigation: any, route: any }) => {
                         Keyboard.dismiss();
 
                         if (responseData.Success) {
-                            console.log("Response data of get details is working", responseData)
+                            console.log("Response data of get details is working", responseData )
 
                             const extractedUserDetails = {
                                 currentCity: responseData.Success.currentCity,
@@ -303,12 +324,13 @@ const Home1 = ({ navigation, route }: { navigation: any, route: any }) => {
             </View>
 
             <View style={{ marginBottom: 20 }}>
+                <Text style={{ color: "black", ...theme.FONTS.Mulish_600SemiBold, fontSize: 17,textAlign:"center",marginBottom:5 }}>Search User</Text>
                 <TextInput value={searchPhone} onFocus={() => setIsFocused(true)} onBlur={() => setIsFocused(false)} maxLength={10} onChangeText={(text) => setSearchPhone(text)} keyboardType="numeric" placeholderTextColor={"lightgrey"}
-                    style={{ borderColor: isFocused ? theme.COLORS.primary : "lightgrey", borderWidth: 2, height: 50, width: 300, paddingHorizontal: 25, borderRadius: 25, backgroundColor: "white", }}
+                    style={{ borderColor: isFocused ? theme.COLORS.primary : "lightgrey", borderWidth: 2, height: 50, width: 300, paddingHorizontal: 25,color:theme.COLORS.bodyTextColor, borderRadius: 25, backgroundColor: "white", }}
                     placeholder="User Number" />
             </View>
 
-            <View style={{ width: windowWidth, flex: 1, elevation: 10, alignItems: "center", justifyContent: 'space-between', backgroundColor: "white", borderTopLeftRadius: 50, borderTopRightRadius: 50, paddingTop: 40 }}>
+            <View style={{ width: windowWidth, flex: 1, elevation: 10,borderTopWidth:2,borderColor:"lightgrey", alignItems: "center", justifyContent: 'space-between', backgroundColor: "white", borderTopLeftRadius: 50, borderTopRightRadius: 50, paddingTop: 40 }}>
 
                 {userFound ?
                     <>
@@ -339,7 +361,7 @@ const Home1 = ({ navigation, route }: { navigation: any, route: any }) => {
                                 }
                             </TouchableOpacity>
 
-                            <TouchableOpacity onPress={() => navigation.navigate("doc-info", { data: { roleId: userDetails.roleId, loanId: userDetails.loanId, panPhoto: userDetails.panPhoto, aadhaarPhoto: userDetails.aadhaarPhoto,agreementPhoto: userDetails.agreementPhoto, no: searchPhone } })} style={{ width: "90%", backgroundColor: theme.COLORS.primary, padding: 20, borderRadius: 20, alignItems: "center", justifyContent: "center", flexDirection: "row", justifyContent: "space-between", marginBottom: 20 }}>
+                            <TouchableOpacity onPress={() => navigation.navigate("doc-info", { data: { roleId: userDetails.roleId, loanId: userDetails.loanId, panPhoto: userDetails.panPhoto, aadhaarPhoto: userDetails.aadhaarPhoto, agreementPhoto: userDetails.agreementPhoto, no: searchPhone } })} style={{ width: "90%", backgroundColor: theme.COLORS.primary, padding: 20, borderRadius: 20, alignItems: "center", justifyContent: "center", flexDirection: "row", justifyContent: "space-between", marginBottom: 20 }}>
                                 <View style={{ flexDirection: "row", alignItems: "center", width: "70%" }}>
                                     <Image source={require('../assets/icons/doc-info.png')} style={{ width: 28, height: 28, tintColor: "white" }}></Image>
                                     <Text style={{ color: "white", ...theme.FONTS.Mulish_500Medium, fontSize: 17, marginLeft: 17 }}>Document Information</Text>
@@ -363,7 +385,7 @@ const Home1 = ({ navigation, route }: { navigation: any, route: any }) => {
                     :
                     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
                         <Image source={require('../assets/icons/doc-info.png')} style={{ width: 120, height: 120, alignSelf: "center", marginBottom: 20 }}></Image>
-                        <Text style={{ ...theme.FONTS.Mulish_700Bold, fontSize: 17 }}>No Loan Found</Text>
+                        <Text style={{ ...theme.FONTS.Mulish_700Bold, fontSize: 17 }}>No Data</Text>
                     </View>
                 }
 

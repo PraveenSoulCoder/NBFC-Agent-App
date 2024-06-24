@@ -29,7 +29,9 @@ const Work_Info = ({ navigation, route }: { navigation: any, route: any }) => {
     const [selectedOption, setSelectedOption] = useState("No");
     const [openPhoto, setOpenPhoto] = useState(false)
 
-    const [notes, setNotes] = useState({ subject: "Work Information", body: "All the details are correct and verified" })
+    const [updateButton, setUpdateButton] = useState(false)
+
+    const [notes, setNotes] = useState({ subject: "Work Information", body: "All the work details are correct and verified" })
 
     const verifyWork = workDetails.companyLon && workDetails.companyLat
         && workDetails.companyPhoto;
@@ -59,11 +61,11 @@ const Work_Info = ({ navigation, route }: { navigation: any, route: any }) => {
             subject: notes.subject,
             body: notes.body,
         })
-
+        setUpdateButton(true)
         try {
             const apiKey = await AsyncStorage.getItem('apikey');
             if (apiKey !== null && workDetails?.companyPhoto && notes.subject !== null && notes.body !== null && workDetails?.companyLon && workDetails?.companyLat) {
-                await fetch(`http://192.168.1.22:6500/business/updateAgentVerify`, {
+                await fetch(`http://65.1.100.95:6500/business/updateAgentVerify`, {
                     method: 'POST',
                     headers: {
                         Accept: 'application/json',
@@ -82,7 +84,7 @@ const Work_Info = ({ navigation, route }: { navigation: any, route: any }) => {
                 })
                     .then((response) => response.json())
                     .then((responseData) => {
-                        setNotesModal(!notesModal)
+                        setNotesModal(false)
                         console.log("Response of the verify details of the user:", responseData)
                         if (responseData.Success) {
                             navigation.navigate("Home1", { no: workDetails.no })
@@ -240,7 +242,7 @@ const Work_Info = ({ navigation, route }: { navigation: any, route: any }) => {
                             ) : (
                                 <TouchableOpacity onPress={photoOpen}>
 
-                                    <Image source={{ uri: workDetails.companyIdPhoto }} style={{ width: "100%", height: 200, objectFit: "contain" }} />
+                                    <Image source={{ uri: workDetails.companyIdPhoto }} style={{ width: "100%", height: 350, objectFit: "contain" }} />
                                 </TouchableOpacity>
 
                             )}
@@ -252,7 +254,7 @@ const Work_Info = ({ navigation, route }: { navigation: any, route: any }) => {
                         <TouchableOpacity onPress={() => getCameraPermission("companyPhoto")} style={{ width: "100%", color: theme.COLORS.bodyTextColor, overflow: "hidden", backgroundColor: theme.COLORS.white, borderRadius: 10, marginTop: 10, borderWidth: 0.5, borderColor: theme.COLORS.primary }}>
                             <Text style={{ textAlign: "center", padding: 8, ...theme.FONTS.Mulish_700Bold, color: theme.COLORS.white, backgroundColor: theme.COLORS.primary }}>Company Image</Text>
                             {workDetails.companyPhoto ?
-                                <Image source={{ uri: workDetails.companyPhoto }} style={{ width: "100%", height: 200, objectFit: "contain" }} /> :
+                                <Image source={{ uri: workDetails.companyPhoto }} style={{ width: "100%", height: 350, objectFit: "contain" }} /> :
                                 <View style={{ width: "100%", height: 150, justifyContent: "center", alignItems: "center", backgroundColor: theme.COLORS.secondary }}>
                                     <Image source={require('../assets/icons/camera.png')} style={{ width: 50, height: 50, objectFit: "contain", marginBottom: 10, }} />
                                     <Text style={{ ...theme.FONTS.Mulish_700Bold, color: theme.COLORS.bodyTextColor }}>Take Photo</Text>
@@ -263,7 +265,7 @@ const Work_Info = ({ navigation, route }: { navigation: any, route: any }) => {
 
                     <View style={{ marginBottom: 50 }}>
                         <Text style={{ ...theme.FONTS.Mulish_600SemiBold }}>Company Current Location </Text>
-                        <TouchableOpacity onPress={() => getCurrentLocation()} style={{ width: "100%", color: theme.COLORS.bodyTextColor, overflow: "hidden", backgroundColor: theme.COLORS.white, borderRadius: 10, marginTop: 10, borderWidth: 0.5, borderColor: theme.COLORS.primary }}>
+                        <TouchableOpacity disabled={locationtrigger} onPress={() => getCurrentLocation()} style={{ width: "100%", color: theme.COLORS.bodyTextColor, overflow: "hidden", backgroundColor: theme.COLORS.white, borderRadius: 10, marginTop: 10, borderWidth: 0.5, borderColor: theme.COLORS.primary }}>
                             <Text style={{ textAlign: "center", padding: 8, ...theme.FONTS.Mulish_700Bold, color: theme.COLORS.white, backgroundColor: theme.COLORS.primary }}>Location Cordinates</Text>
                             {locationtrigger? 
                                 <Image source={require('../assets/loader.gif')}  style={{ width: 40, height: 40,alignSelf:"center",margin:10, }}/> :
@@ -289,6 +291,7 @@ const Work_Info = ({ navigation, route }: { navigation: any, route: any }) => {
                     <View style={{ marginBottom: 15 }}>
 
                     </View>
+                    
                     <PermissionModal permissionContent={permissionType} visible={permissionModal} closeModal={closeModal} />
                 </ScrollView>
 
@@ -326,7 +329,7 @@ const Work_Info = ({ navigation, route }: { navigation: any, route: any }) => {
                                 }} value={notes.body} />
                         }
 
-                        <TouchableOpacity style={{ backgroundColor: theme.COLORS.primary, borderRadius: 10, alignSelf: 'flex-end', width: "35%", paddingVertical: 7, justifyContent: "center", alignItems: "center" }} onPress={() => { verifyWorkDetails() }}>
+                        <TouchableOpacity disabled={updateButton} style={{ backgroundColor: theme.COLORS.primary, borderRadius: 10, alignSelf: 'flex-end', width: "35%", paddingVertical: 7, justifyContent: "center", alignItems: "center" }} onPress={() => { verifyWorkDetails() }}>
                             <Text style={{ color: theme.COLORS.white }}>Proceed</Text>
                         </TouchableOpacity>
 

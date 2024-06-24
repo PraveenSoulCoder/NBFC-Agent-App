@@ -28,11 +28,13 @@ const Home1 = ({ navigation, route }: { navigation: any, route: any }) => {
     const [workDetails, setWorkDetails] = useState({});
 
     const [locationPermission, setLocationPermission] = useState(false);
+    const [updateButton, setUpdateButton] = useState(false)
+
 
     const [notesModal, setNotesModal] = useState(false);
     const [selectedOption, setSelectedOption] = useState("No");
 
-    const [notes, setNotes] = useState({ subject: "User Information", body: "All the details are correct and verified" })
+    const [notes, setNotes] = useState({ subject: "All Information", body: "All the details are correct and verified" })
 
     const submit = (
         !userDetails.houseLon || userDetails.houseLon.length <= 0 ||
@@ -124,7 +126,7 @@ const Home1 = ({ navigation, route }: { navigation: any, route: any }) => {
         console.log("parameters :", roleId, searchPhone, apiKey)
         try {
             if (searchPhone !== null && searchPhone !== undefined && searchPhone.length == 10) {
-                await fetch(`http://192.168.1.22:6500/business/getAgentVerifyLoans`, {
+                await fetch(`http://65.1.100.95:6500/business/getAgentVerifyLoans`, {
                     method: 'POST',
                     headers: {
                         Accept: 'application/json',
@@ -250,11 +252,11 @@ const Home1 = ({ navigation, route }: { navigation: any, route: any }) => {
             subject: notes.subject,
             body: notes.body,
         })
-        setNotesModal(false)
+        setUpdateButton(true)
         try {
             const apiKey = await AsyncStorage.getItem('apikey');
             if (apiKey !== null && submit == false) {
-                await fetch(`http://192.168.1.22:6500/business/updateAgentVerify`, {
+                await fetch(`http://65.1.100.95:6500/business/updateAgentVerify`, {
                     method: 'POST',
                     headers: {
                         Accept: 'application/json',
@@ -271,6 +273,7 @@ const Home1 = ({ navigation, route }: { navigation: any, route: any }) => {
                 })
                     .then((response) => response.json())
                     .then((responseData) => {
+                        setNotesModal(false)
                         console.log("Response of the verify details of the user:", responseData)
                         if (responseData.Success) {
                             ToastAndroid.show("User Verified Successfully", 3)
@@ -424,7 +427,7 @@ const Home1 = ({ navigation, route }: { navigation: any, route: any }) => {
                             }} value={notes.body} />
                     }
 
-                    <TouchableOpacity style={{ backgroundColor: theme.COLORS.primary, borderRadius: 10, alignSelf: 'flex-end', width: "35%", paddingVertical: 7, justifyContent: "center", alignItems: "center" }} onPress={() => { verifyData() }}>
+                    <TouchableOpacity disabled={updateButton} style={{ backgroundColor: theme.COLORS.primary, borderRadius: 10, alignSelf: 'flex-end', width: "35%", paddingVertical: 7, justifyContent: "center", alignItems: "center" }} onPress={() => { verifyData() }}>
                         <Text style={{ color: theme.COLORS.white }}>Proceed</Text>
                     </TouchableOpacity>
 

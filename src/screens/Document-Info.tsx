@@ -31,8 +31,9 @@ const Document_Info = ({ navigation, route }: { navigation: any, route: any }) =
 
     const [openPhoto, setOpenPhoto] = useState(false)
     const [selectedPhoto, setSelectedPhoto] = useState()
+    const [updateButton, setUpdateButton] = useState(false)
 
-    const [notes, setNotes] = useState({ subject: "Document Information", body: "All the details are correct and verified" })
+    const [notes, setNotes] = useState({ subject: "Document Information", body: "All the document details are correct and verified" })
     const hasAgreementPhoto = documentDetails.agreementPhoto && Array.isArray(documentDetails.agreementPhoto) && documentDetails.agreementPhoto.length > 0;
 
 
@@ -72,11 +73,11 @@ const Document_Info = ({ navigation, route }: { navigation: any, route: any }) =
             subject: notes.subject,
             body: notes.body,
         })
-
+        setUpdateButton(true)
         try {
             const apiKey = await AsyncStorage.getItem('apikey');
             if (apiKey !== null && notes.subject !== null && notes.body !== null && documentDetails?.aadhaarPhoto && documentDetails?.panPhoto && documentDetails?.agreementPhoto) {
-                await fetch(`http://192.168.1.22:6500/business/updateAgentVerify`, {
+                await fetch(`http://65.1.100.95:6500/business/updateAgentVerify`, {
                     method: 'POST',
                     headers: {
                         Accept: 'application/json',
@@ -95,6 +96,7 @@ const Document_Info = ({ navigation, route }: { navigation: any, route: any }) =
                 })
                     .then((response) => response.json())
                     .then((responseData) => {
+                        setNotesModal(false)
                         console.log("Response of the verify details of the user:", responseData)
                         if (responseData.Success) {
                             navigation.navigate("Home1", { no: documentDetails.no })
@@ -172,7 +174,7 @@ const Document_Info = ({ navigation, route }: { navigation: any, route: any }) =
                             <Text style={{ textAlign: "center", padding: 8, ...theme.FONTS.Mulish_700Bold, color: theme.COLORS.white, backgroundColor: theme.COLORS.primary }}>Pan Image</Text>
                             {documentDetails?.panPhoto ?
 
-                                <Image source={{ uri: documentDetails?.panPhoto }} style={{ width: "100%", height: 200, objectFit: "contain" }} /> :
+                                <Image source={{ uri: documentDetails?.panPhoto }} style={{ width: "100%", height: 350, objectFit: "contain" }} /> :
                                 <View style={{ width: "100%", height: 150, justifyContent: "center", alignItems: "center", backgroundColor: theme.COLORS.secondary }}>
                                     <Image source={require('../assets/icons/camera.png')} style={{ width: 50, height: 50, objectFit: "contain", marginBottom: 10, }} />
                                     <Text style={{ ...theme.FONTS.Mulish_700Bold, color: theme.COLORS.bodyTextColor }}>Take Photo</Text>
@@ -186,7 +188,7 @@ const Document_Info = ({ navigation, route }: { navigation: any, route: any }) =
                         <TouchableOpacity onPress={() => getCameraPermission("aadharPhoto")} style={{ width: "100%", color: theme.COLORS.bodyTextColor, overflow: "hidden", backgroundColor: theme.COLORS.white, borderRadius: 10, marginTop: 10, borderWidth: 0.5, borderColor: theme.COLORS.primary }}>
                             <Text style={{ textAlign: "center", padding: 8, ...theme.FONTS.Mulish_700Bold, color: theme.COLORS.white, backgroundColor: theme.COLORS.primary }}>Aadhar Image</Text>
                             {documentDetails.aadhaarPhoto ?
-                                <Image source={{ uri: documentDetails.aadhaarPhoto }} style={{ width: "100%", height: 200, objectFit: "contain" }} /> :
+                                <Image source={{ uri: documentDetails.aadhaarPhoto }} style={{ width: "100%", height: 350, objectFit: "contain" }} /> :
                                 <View style={{ width: "100%", height: 150, justifyContent: "center", alignItems: "center", backgroundColor: theme.COLORS.secondary }}>
                                     <Image source={require('../assets/icons/camera.png')} style={{ width: 50, height: 50, objectFit: "contain", marginBottom: 10, }} />
                                     <Text style={{ ...theme.FONTS.Mulish_700Bold, color: theme.COLORS.bodyTextColor }}>Take Photo</Text>
@@ -276,7 +278,7 @@ const Document_Info = ({ navigation, route }: { navigation: any, route: any }) =
                                 }} value={notes.body} />
                         }
 
-                        <TouchableOpacity style={{ backgroundColor: theme.COLORS.primary, borderRadius: 10, alignSelf: 'flex-end', width: "35%", paddingVertical: 7, justifyContent: "center", alignItems: "center" }} onPress={() => { verifyDocuments() }}>
+                        <TouchableOpacity disabled={updateButton} style={{ backgroundColor: theme.COLORS.primary, borderRadius: 10, alignSelf: 'flex-end', width: "35%", paddingVertical: 7, justifyContent: "center", alignItems: "center" }} onPress={() => { verifyDocuments() }}>
                             <Text style={{ color: theme.COLORS.white }}>Proceed</Text>
                         </TouchableOpacity>
 

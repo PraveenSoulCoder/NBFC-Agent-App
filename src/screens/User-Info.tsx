@@ -11,6 +11,7 @@ import RadioButton from "../components/RadioButton";
 import PermissionModal from "../components/PermissionModal";
 import { Camera } from 'expo-camera';
 import PinchableImage from "../components/PinchableImage";
+import { loadAsync } from "expo-font";
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -21,10 +22,11 @@ const User_Info = ({ navigation, route }: { navigation: any, route: any }) => {
     const [permissionModal, setPermissionModal] = useState(false);
     const [permissionType, setPermissionType] = useState('');
     const [notesModal, setNotesModal] = useState(false);
-    const [notes, setNotes] = useState({ subject: "User Information", body: "All the details are correct and verified" })
+    const [notes, setNotes] = useState({ subject: "User Information", body: "All the user details are correct and verified" })
     const [selectedOption, setSelectedOption] = useState("No");
     const [openPhoto, setOpenPhoto] = useState(false)
     const [locationtrigger, setLocationTrigger] = useState(false)
+    const [updateButton, setUpdateButton] = useState(false)
 
     const verifyUser = (userDetails.houseLon && userDetails.houseLat)
         && (userDetails.housePhoto)
@@ -55,7 +57,7 @@ const User_Info = ({ navigation, route }: { navigation: any, route: any }) => {
     //         const apiKey = await AsyncStorage.getItem('apikey');
     //         console.log("ApiKey", apiKey)
     //         if (apiKey !== null) {
-    //             await fetch(`http://192.168.1.22:6500/business/getDetails`, {
+    //             await fetch(`http://65.1.100.95:6500/business/getDetails`, {
     //                 method: 'POST',
     //                 headers: {
     //                     Accept: 'application/json',
@@ -92,11 +94,11 @@ const User_Info = ({ navigation, route }: { navigation: any, route: any }) => {
             subject: notes.subject,
             body: notes.body,
         })
-
+        setUpdateButton(true)
         try {
             const apiKey = await AsyncStorage.getItem('apikey');
             if (apiKey !== null && userDetails.housePhoto && userDetails.userPicture && userDetails.houseLon && userDetails.houseLat && notes.subject !== "" && notes.body !== "") {
-                await fetch(`http://192.168.1.22:6500/business/updateAgentVerify`, {
+                await fetch(`http://65.1.100.95:6500/business/updateAgentVerify`, {
                     method: 'POST',
                     headers: {
                         Accept: 'application/json',
@@ -331,7 +333,7 @@ const User_Info = ({ navigation, route }: { navigation: any, route: any }) => {
                         <TouchableOpacity onPress={() => getCameraPermission('housePhoto')} style={{ width: "100%", color: theme.COLORS.bodyTextColor, overflow: "hidden", backgroundColor: theme.COLORS.white, borderRadius: 10, marginTop: 10, borderWidth: 0.5, borderColor: theme.COLORS.primary }}>
                             <Text style={{ textAlign: "center", padding: 8, ...theme.FONTS.Mulish_700Bold, color: theme.COLORS.white, backgroundColor: theme.COLORS.primary }}>House Image</Text>
                             {userDetails.housePhoto ?
-                                <Image source={{ uri: userDetails.housePhoto }} style={{ width: "100%", height: 200, objectFit: "contain" }} /> :
+                                <Image source={{ uri: userDetails.housePhoto }} style={{flex:1, width: "100%", height: 350, objectFit: "contain" }} /> :
                                 <View style={{ width: "100%", height: 150, justifyContent: "center", alignItems: "center", backgroundColor: theme.COLORS.secondary }}>
                                     <Image source={require('../assets/icons/camera.png')} style={{ width: 50, height: 50, objectFit: "contain", marginBottom: 10, }} />
                                     <Text style={{ ...theme.FONTS.Mulish_700Bold, color: theme.COLORS.bodyTextColor }}>Take Photo</Text>
@@ -345,7 +347,7 @@ const User_Info = ({ navigation, route }: { navigation: any, route: any }) => {
                         <TouchableOpacity onPress={() => { getCameraPermission('userProfile'); }} style={{ width: "100%", color: theme.COLORS.bodyTextColor, overflow: "hidden", backgroundColor: theme.COLORS.white, borderRadius: 10, marginTop: 10, borderWidth: 0.5, borderColor: theme.COLORS.primary }}>
                             <Text style={{ textAlign: "center", padding: 8, ...theme.FONTS.Mulish_700Bold, color: theme.COLORS.white, backgroundColor: theme.COLORS.primary }}>Profile Image</Text>
                             {userDetails.userPicture ?
-                                <Image source={{ uri: userDetails.userPicture }} style={{ width: "100%", height: 200, objectFit: "contain" }} /> :
+                                <Image source={{ uri: userDetails.userPicture }} style={{ width: "100%", height: 350, objectFit: "contain" }} /> :
                                 <View style={{ width: "100%", height: 150, justifyContent: "center", alignItems: "center", backgroundColor: theme.COLORS.secondary }}>
                                     <Image source={require('../assets/icons/camera.png')} style={{ width: 50, height: 50, objectFit: "contain", marginBottom: 10, }} />
                                     <Text style={{ ...theme.FONTS.Mulish_700Bold, color: theme.COLORS.bodyTextColor }}>Take Photo</Text>
@@ -356,7 +358,7 @@ const User_Info = ({ navigation, route }: { navigation: any, route: any }) => {
 
                     <View style={{ marginBottom: 50 }}>
                         <Text style={{ ...theme.FONTS.Mulish_600SemiBold }}>User Current Location </Text>
-                        <TouchableOpacity onPress={() => getCurrentLocation()} style={{ width: "100%", color: theme.COLORS.bodyTextColor, overflow: "hidden", backgroundColor: theme.COLORS.white, borderRadius: 10, marginTop: 10, borderWidth: 0.5, borderColor: theme.COLORS.primary }}>
+                        <TouchableOpacity disabled={locationtrigger} onPress={() => getCurrentLocation()} style={{ width: "100%", color: theme.COLORS.bodyTextColor, overflow: "hidden", backgroundColor: theme.COLORS.white, borderRadius: 10, marginTop: 10, borderWidth: 0.5, borderColor: theme.COLORS.primary }}>
                             <Text style={{ textAlign: "center", padding: 8, ...theme.FONTS.Mulish_700Bold, color: theme.COLORS.white, backgroundColor: theme.COLORS.primary }}>Location Cordinates</Text>
                             {locationtrigger? 
                                 <Image source={require('../assets/loader.gif')}  style={{ width: 40, height: 40,alignSelf:"center",margin:10, }}/> :
@@ -427,7 +429,7 @@ const User_Info = ({ navigation, route }: { navigation: any, route: any }) => {
                                 }} value={notes.body} />
                         }
 
-                        <TouchableOpacity style={{ backgroundColor: theme.COLORS.primary, borderRadius: 10, alignSelf: 'flex-end', width: "35%", paddingVertical: 7, justifyContent: "center", alignItems: "center" }} onPress={() => { verifyUserDetails() }}>
+                        <TouchableOpacity disabled={updateButton} style={{ backgroundColor: theme.COLORS.primary, borderRadius: 10, alignSelf: 'flex-end', width: "35%", paddingVertical: 7, justifyContent: "center", alignItems: "center" }} onPress={() => { verifyUserDetails() }}>
                             <Text style={{ color: theme.COLORS.white }}>Proceed</Text>
                         </TouchableOpacity>
 

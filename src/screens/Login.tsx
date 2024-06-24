@@ -136,7 +136,7 @@ const Login: React.FC = ({ navigation, route }: any) => {
         ) {
           setUserErrorMessage(false);
           // navigation.navigate("Home");
-          await fetch("http://192.168.1.22:6500/business/loginRole", {
+          await fetch("http://65.1.100.95:6500/business/loginRole", {
             method: "POST",
             headers: {
               Accept: "application/json",

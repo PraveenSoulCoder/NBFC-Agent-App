@@ -22,6 +22,9 @@ import AWS from 'aws-sdk';
 import * as FileSystem from 'expo-file-system';
 import { Buffer } from 'buffer';
 import LoadingBox from '../components/LoadingBox';
+import * as ImageManipulator from 'expo-image-manipulator';
+
+
 import PermissionModal from '../components/PermissionModal';
 
 
@@ -67,9 +70,26 @@ const FileCapture: React.FC = ({ route: { params }, navigation }: any) => {
   const __takePicture = async () => {
     setIsCaptured(true)
     const photo: any = await cameraref.current.takePictureAsync();
+    // const originalFileInfo = await FileSystem.getInfoAsync(photo.uri);
+    // console.log('Original Size:', originalFileInfo.size);
+    // console.log("photo", photo)
+    const manipResult = await  compressImage(photo.uri)
+    // const compressedFileInfo = await FileSystem.getInfoAsync(manipResult.uri);
+    // console.log("manipResult", manipResult)
+    // console.log('Compressed Size:', compressedFileInfo.size);
+
     setPreviewVisible(true)
-    setCapturedImage(photo)
+    setCapturedImage(manipResult)
   }
+  
+  const compressImage = async (uri) => {
+    const manipResult = await ImageManipulator.manipulateAsync(
+      uri,
+      [],
+      { compress: 0.65, format: ImageManipulator.SaveFormat.JPEG }
+    );
+    return manipResult;
+  };
 
   const __savePhoto = async () => {
     setButtonDisable(true)
@@ -249,11 +269,14 @@ const FileCapture: React.FC = ({ route: { params }, navigation }: any) => {
               </Pressable>
             </View>
 
+            {['pan', 'aadhar', 'agreement'].includes(params.photoType) ?
             <View style={{ flex: 1, width: "100%", backgroundColor: "transparent", justifyContent: "center", alignItems: "center", }}>
               <View style={{ backgroundColor: "transparent", width: Dimensions.get("window").width - 50, height: Dimensions.get("window").height - 300, borderColor: "white", borderWidth: 2, borderRadius: 10, }}>
 
               </View>
-            </View>
+            </View> :
+            <View style={{ flex: 1, width: "100%", backgroundColor: "transparent", justifyContent: "center", alignItems: "center", }}/>
+            }
 
             <TouchableOpacity disabled={isCaptured} onPress={__takePicture} style={{ width: 70, height: 70, bottom: 0, borderRadius: 50, backgroundColor: "#fff", alignSelf: "center", marginBottom: 20 }} />
 

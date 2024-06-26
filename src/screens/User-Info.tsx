@@ -11,7 +11,6 @@ import RadioButton from "../components/RadioButton";
 import PermissionModal from "../components/PermissionModal";
 import { Camera } from 'expo-camera';
 import PinchableImage from "../components/PinchableImage";
-import { loadAsync } from "expo-font";
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -34,66 +33,18 @@ const User_Info = ({ navigation, route }: { navigation: any, route: any }) => {
 
     useEffect(() => {
         if (route?.params?.fileUri) {
-            console.log(route?.params?.fileUri)
             if (route?.params?.photoType == "house") {
-                // setUserHousePhoto(route?.params?.fileUri)
                 setUserDetails({ ...userDetails, housePhoto: route?.params?.fileUri })
             } else if (route?.params?.photoType == "profile") {
-                // setUserProfilePhoto(route?.params?.fileUri)
                 setUserDetails({ ...userDetails, userPicture: route?.params?.fileUri })
             }
-
-            console.log("passRoute :", route?.params?.photoType)
-            // }else if(route?.params?.type == "user"){
         } else {
             setUserDetails(route?.params?.data)
-            console.log("userDetails", route?.params?.data.roleId)
         }
     }, [route]);
 
-    // const getUserDetails = async () => {
-
-    //     try {
-    //         const apiKey = await AsyncStorage.getItem('apikey');
-    //         console.log("ApiKey", apiKey)
-    //         if (apiKey !== null) {
-    //             await fetch(`http://65.1.100.95:6500/business/getDetails`, {
-    //                 method: 'POST',
-    //                 headers: {
-    //                     Accept: 'application/json',
-    //                     'Content-Type': 'application/json',
-    //                 },
-    //                 body: JSON.stringify({
-    //                     accId: "1001718080758",
-    //                     apiKey: "TjJXNk9oNm14a2dobzR0K3NmK1dIY1BsRVMvMyswNktMRkV0MjBVRXJadz0=",
-    //                     type: "user",
-    //                 })
-    //             })
-    //                 .then((response) => response.json())
-    //                 .then((responseData) => {
-    //                     console.log("Response :", responseData)
-    //                     if (responseData.Success) {
-    //                         setUserDetails(responseData.Success)
-    //                     }
-    //                 })
-    //         }
-    //     } catch (e) {
-    //         console.log("Error", e);
-    //     }
-    // }
-
     const verifyUserDetails = async () => {
-        console.log("payload of the :", {
-            apiKey: "M2hZZytlZU1vL3h0aWR2TXVoOUFhdTV1RmNRaWVnaGYxZ0Vpb0hBVmFKbz",
-            roleId: userDetails?.roleId,
-            loanId: userDetails?.loanId,
-            houseLon: userDetails.houseLon,
-            houseLat: userDetails.houseLat,
-            housePhoto: userDetails.housePhoto,
-            userPicture: userDetails.userPicture,
-            subject: notes.subject,
-            body: notes.body,
-        })
+       
         setUpdateButton(true)
         try {
             const apiKey = await AsyncStorage.getItem('apikey');
@@ -119,7 +70,6 @@ const User_Info = ({ navigation, route }: { navigation: any, route: any }) => {
                     .then((response) => response.json())
                     .then((responseData) => {
                         setNotesModal(false)
-                        console.log("Response of the verify details of the user:", responseData)
                         if (responseData.Success) {
                             navigation.navigate("Home1", { no: userDetails.no })
                         }
@@ -132,11 +82,6 @@ const User_Info = ({ navigation, route }: { navigation: any, route: any }) => {
 
     const getDistanceFromLatLonInMeters = (lat1, lon1, lat2, lon2) => {
 
-        console.log(lat1)
-        console.log(lon1)
-
-        console.log(lat2)
-        console.log(lon2)
 
         const R = 6371e3; // Radius of the Earth in meters
         const dLat = (lat2 - lat1) * Math.PI / 180;
@@ -156,21 +101,16 @@ const User_Info = ({ navigation, route }: { navigation: any, route: any }) => {
             let { status } = await Location.requestForegroundPermissionsAsync();
             if (status !== 'granted') {
                 openModal('Location')
-                console.log('Permission to access location was denied');
                 return;
-            } else {
-                console.log('Permission to access location granted');
-            }
+            } 
 
             let location = await Location.getCurrentPositionAsync({});
 
-            console.log("location",location);
 
             const userLat = location.coords.latitude;
             const userLon = location.coords.longitude;
 
             const distance = getDistanceFromLatLonInMeters(userLat, userLon, userDetails.userLatitude, userDetails.userLongitude);
-            console.log(`Distance to house: ${distance} meters`);
 
             if (distance <= 100) {
                 ToastAndroid.show("Location fetched successfully", 3)
@@ -178,20 +118,15 @@ const User_Info = ({ navigation, route }: { navigation: any, route: any }) => {
                 setUserDetails({ ...userDetails, houseLon: location.coords.longitude, houseLat: location.coords.latitude })
             } else {
                 ToastAndroid.show("You need to be within 100 meters of the company", 3)
-
-                console.log('User is not within 100 meters of the company');
-                // Perform actions based on the user being outside of 100 meters
             }
         } catch (err) {
             console.log(err);
-            //   setErrorMsg('An error occurred while fetching the location');
         }
     };
 
     const getCameraPermission = async (type) => {
 
         const { status } = await Camera.requestCameraPermissionsAsync();
-        console.log("Camera permission", status);
 
         if (status !== "granted") {
             openModal('Camera');
@@ -240,7 +175,6 @@ const User_Info = ({ navigation, route }: { navigation: any, route: any }) => {
     };
 
     const photoOpen = (type) => {
-        console.log("Inside photoOpen")
         setOpenPhoto(true)
     }
 

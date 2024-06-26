@@ -4,9 +4,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Text, View, Button, Platform,StyleSheet ,StatusBar,Alert,SafeAreaView,Linking ,Modal,BackHandler,ScrollView,RefreshControl ,Pressable} from 'react-native';
 import {WebView} from 'react-native-webview';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AntDesign } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
 
 const WebviewScreen: React.FC = ({route: {params},navigation  }: any) => {
     //const navigation : any = useNavigation();

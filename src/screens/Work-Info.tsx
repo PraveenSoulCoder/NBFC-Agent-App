@@ -39,33 +39,20 @@ const Work_Info = ({ navigation, route }: { navigation: any, route: any }) => {
 
     useEffect(() => {
         if (route?.params?.fileUri) {
-            console.log(route?.params?.fileUri)
             if (route?.params?.photoType == "company") {
-                // setCompanyPhoto(route?.params?.fileUri)
                 setWorkDetails({ ...workDetails, companyPhoto: route?.params?.fileUri })
             }
         } else {
             setWorkDetails(route?.params?.data)
-            console.log("userDetails", route?.params?.data.roleId)
         }
     }, [route]);
 
     const verifyWorkDetails = async () => {
-        console.log("payload of the :", {
-            apiKey: "M2hZZytlZU1vL3h0aWR2TXVoOUFhdTV1RmNRaWVnaGYxZ0Vpb0hBVmFKbz",
-            roleId: workDetails?.roleId,
-            loanId: workDetails?.loanId,
-            companyLon: workDetails?.companyLon,
-            companyLat: workDetails?.companyLat,
-            companyPhoto: workDetails?.companyPhoto,
-            subject: notes.subject,
-            body: notes.body,
-        })
         setUpdateButton(true)
         try {
             const apiKey = await AsyncStorage.getItem('apikey');
             if (apiKey !== null && workDetails?.companyPhoto && notes.subject !== null && notes.body !== null && workDetails?.companyLon && workDetails?.companyLat) {
-                await fetch(`http://65.1.100.95:6500/business/updateAgentVerify`, {
+                await fetch(`http://192.168.1.7:6500/business/updateAgentVerify`, {
                     method: 'POST',
                     headers: {
                         Accept: 'application/json',
@@ -85,7 +72,6 @@ const Work_Info = ({ navigation, route }: { navigation: any, route: any }) => {
                     .then((response) => response.json())
                     .then((responseData) => {
                         setNotesModal(false)
-                        console.log("Response of the verify details of the user:", responseData)
                         if (responseData.Success) {
                             navigation.navigate("Home1", { no: workDetails.no })
                         }
@@ -97,11 +83,6 @@ const Work_Info = ({ navigation, route }: { navigation: any, route: any }) => {
     }
 
     const getDistanceFromLatLonInMeters = (lat1, lon1, lat2, lon2) => {
-
-        console.log(lat1)
-        console.log(lat2)
-        console.log(lon1)
-        console.log(lon2)
 
         const R = 6371e3; // Radius of the Earth in meters
         const dLat = (lat2 - lat1) * Math.PI / 180;
@@ -121,8 +102,6 @@ const Work_Info = ({ navigation, route }: { navigation: any, route: any }) => {
             if (status !== 'granted') {
                 openModal('Location')
                 return;
-            } else {
-                console.log('Permission to access location granted');
             }
 
             let location = await Location.getCurrentPositionAsync({});
@@ -131,7 +110,6 @@ const Work_Info = ({ navigation, route }: { navigation: any, route: any }) => {
             const userLon = location.coords.longitude;
 
             const distance = getDistanceFromLatLonInMeters(userLat, userLon, workDetails.companyLatitude, workDetails.companyLongitude);
-            console.log(`Distance to house: ${distance} meters`);
 
             if (distance <= 100) {
                 ToastAndroid.show("Location fetched successfully", 3)
@@ -139,19 +117,15 @@ const Work_Info = ({ navigation, route }: { navigation: any, route: any }) => {
                 setWorkDetails({ ...workDetails, companyLat: location?.coords?.latitude, companyLon: location?.coords?.longitude })
             } else {
                 ToastAndroid.show("You need to be within 100 meters of the company", 3)
-                console.log('User is not within 100 meters of the company');
-                // Perform actions based on the user being outside of 100 meters
             }
         } catch (err) {
             console.log(err);
-            //   setErrorMsg('An error occurred while fetching the location');
         }
     };
 
     const getCameraPermission = async (type) => {
 
         const { status } = await Camera.requestCameraPermissionsAsync();
-        console.log("Camera permission", status);
 
         if (status !== "granted") {
             openModal('Camera');
@@ -199,7 +173,6 @@ const Work_Info = ({ navigation, route }: { navigation: any, route: any }) => {
     };
 
     const photoOpen = (type) => {
-        console.log("Inside photoOpen")
         setOpenPhoto(true)
     }
 
@@ -242,7 +215,7 @@ const Work_Info = ({ navigation, route }: { navigation: any, route: any }) => {
                             ) : (
                                 <TouchableOpacity onPress={photoOpen}>
 
-                                    <Image source={{ uri: workDetails.companyIdPhoto }} style={{ width: "100%", height: 350, objectFit: "contain" }} />
+                                    <Image source={{ uri: workDetails.companyIdPhoto }} style={{ width: "100%", height:200, objectFit: "contain" }} />
                                 </TouchableOpacity>
 
                             )}

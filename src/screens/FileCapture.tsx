@@ -11,7 +11,6 @@ import {
   Dimensions,
   Pressable,
   Image,
-  ToastAndroid,
 } from "react-native";
 import { Camera, CameraType, FlashMode, CameraView, useCameraPermissions } from 'expo-camera';
 import { theme } from '../constants';
@@ -23,11 +22,6 @@ import * as FileSystem from 'expo-file-system';
 import { Buffer } from 'buffer';
 import LoadingBox from '../components/LoadingBox';
 import * as ImageManipulator from 'expo-image-manipulator';
-
-
-import PermissionModal from '../components/PermissionModal';
-
-
 
 const FileCapture: React.FC = ({ route: { params }, navigation }: any) => {
   const [startCamera, setStartCamera] = React.useState(false)
@@ -94,7 +88,6 @@ const FileCapture: React.FC = ({ route: { params }, navigation }: any) => {
   const __savePhoto = async () => {
     setButtonDisable(true)
     let action = params.action;
-    console.log("capturedImage", capturedImage)
     let fileUris: any = await handleUpload(capturedImage, action)
 
   }
@@ -121,7 +114,6 @@ const FileCapture: React.FC = ({ route: { params }, navigation }: any) => {
 
   const handleUpload = async (file: any, name: any) => {
     if (!file) {
-      console.log('Please select a file first.');
       return;
     }
     setLoading(true);
@@ -138,12 +130,10 @@ const FileCapture: React.FC = ({ route: { params }, navigation }: any) => {
         ContentType: 'image/jpeg', // Adjust based on your file type
       };
 
-      console.log('params (without Body)', { ...params, Body: '<Base64 String>' });
 
       const data = await s3.upload(params).promise();
 
       if (data.Location) {
-        console.log('data.Location', data.Location);
         setFileUri(data.Location);
         setLoading(false);
         return { 'Success': data.Location };

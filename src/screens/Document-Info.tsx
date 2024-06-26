@@ -43,14 +43,12 @@ const Document_Info = ({ navigation, route }: { navigation: any, route: any }) =
 
     useEffect(() => {
         if (route?.params?.fileUri) {
-            console.log(route?.params?.fileUri)
             if (route?.params?.photoType == "pan") {
                 setDocumentDetails({ ...documentDetails, panPhoto: route?.params?.fileUri })
             } else if (route?.params?.photoType == "aadhar") {
                 setDocumentDetails({ ...documentDetails, aadhaarPhoto: route?.params?.fileUri })
             } else if (route?.params?.photoType == "agreement") {
                 // setDocumentDetails({ ...documentDetails, agreementPhoto: route?.params?.fileUri })
-                console.log("agreementPhoto", route?.params?.fileUri)
                 setDocumentDetails({
                     ...documentDetails,
                     agreementPhoto: [...(documentDetails.agreementPhoto || []), route?.params?.fileUri]
@@ -63,21 +61,11 @@ const Document_Info = ({ navigation, route }: { navigation: any, route: any }) =
     }, [route]);
 
     const verifyDocuments = async () => {
-        console.log("payload of the :", {
-            apiKey: "M2hZZytlZU1vL3h0aWR2TXVoOUFhdTV1RmNRaWVnaGYxZ0Vpb0hBVmFKbz",
-            roleId: documentDetails?.roleId,
-            loanId: documentDetails?.loanId,
-            aadhaarPhoto: documentDetails?.aadhaarPhoto,
-            panPhoto: documentDetails?.panPhoto,
-            agreementPhoto: documentDetails?.agreementPhoto,
-            subject: notes.subject,
-            body: notes.body,
-        })
         setUpdateButton(true)
         try {
             const apiKey = await AsyncStorage.getItem('apikey');
             if (apiKey !== null && notes.subject !== null && notes.body !== null && documentDetails?.aadhaarPhoto && documentDetails?.panPhoto && documentDetails?.agreementPhoto) {
-                await fetch(`http://65.1.100.95:6500/business/updateAgentVerify`, {
+                await fetch(`http://192.168.1.7:6500/business/updateAgentVerify`, {
                     method: 'POST',
                     headers: {
                         Accept: 'application/json',
@@ -97,7 +85,6 @@ const Document_Info = ({ navigation, route }: { navigation: any, route: any }) =
                     .then((response) => response.json())
                     .then((responseData) => {
                         setNotesModal(false)
-                        console.log("Response of the verify details of the user:", responseData)
                         if (responseData.Success) {
                             navigation.navigate("Home1", { no: documentDetails.no })
                         }
@@ -115,7 +102,6 @@ const Document_Info = ({ navigation, route }: { navigation: any, route: any }) =
     const getCameraPermission = async (type) => {
 
         const { status } = await Camera.requestCameraPermissionsAsync();
-        console.log("Camera permission", status);
 
         if (status !== "granted") {
             openModal('Camera');

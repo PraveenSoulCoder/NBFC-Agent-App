@@ -6,9 +6,6 @@ import {
   Text,
   Dimensions,
   Pressable,
-  StyleSheet,
-  StatusBar,
-  BackHandler,
   TextInput,
   ScrollView,
   SafeAreaView,
@@ -20,11 +17,9 @@ import React, { useEffect, useState, useRef } from "react";
 import InputField from "../extra/InputField";
 import ImageField from "../extra/ImageField";
 import { theme } from "../constants";
-// import CheckBoxField from "../extra/CheckBoxField";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Location from 'expo-location';
 
-const { height } = Dimensions.get('window');
 
 const Home = ({ navigation, route }: { navigation: any, route: any }) => {
   const scrollViewRef = useRef(null);
@@ -37,88 +32,6 @@ const Home = ({ navigation, route }: { navigation: any, route: any }) => {
   const [renderLoan, setRenderLoan] = useState(false);
   const [loanData, setLoanData] = useState<any>([]);
   const [errText, setErrText] = useState("Enter Phone Number")
-  // const [loanData, setLoanData] = useState([{
-  //     "userName": "John Doe",
-  //     "userPhone": "1234567890",
-  //     "userEmail": "john.doe@example.com",
-  //     "userDOB": "1990-01-01",
-  //     "currentCountry": "USA",
-  //     "currentState": "California",
-  //     "currentCity": "Los Angeles",
-  //     "currentDistrict": "Downtown",
-  //     "currentPincode": "90001",
-  //     "currentHouseNo": "123",
-  //     "currentStreet": "Main St",
-  //     "currentLandmark": "Beachfront",
-  //     "permanentCountry": "USA",
-  //     "permanentState": "California",
-  //     "permanentCity": "Los Angeles",
-  //     "permanentDistrict": "Downtown",
-  //     "permanentPincode": "90001",
-  //     "permanentHouseNo": "123",
-  //     "permanentStreet": "Main St",
-  //     "permanentLandmark": "Beachfront",
-  //     "userProfilePic": "https://example.com/profile.jpg",
-  //     "userAge": 32,
-  //     "userGender": "Male",
-  //     "userFatherName": "Jim Doe",
-  //     "userMotherName": "Jane Doe",
-  //     "userMaritalStatus": "Married",
-  //     "userCommunity": "Los Angeles Community",
-  //     "userNationality": "American",
-  //     "userBloodGroup": "O+",
-  //     "userEducation": "Bachelor of Science in Computer Science",
-  //     "userResidentialOwnerShip": "Own",
-  //     "userLatitude": 34.052235,
-  //     "userLongitude": -118.243683,
-  //     "companyName": "Tech Solutions",
-  //     "companyType": "self",
-  //     "companyDesignation": "Developer",
-  //     "companyCity": "San Francisco",
-  //     "companyDistrict": "South Bay",
-  //     "companyPincode": "94123",
-  //     "companyStreet": "Market St",
-  //     "companyLandmark": "Financial District",
-  //     "companyLatitude": 37.794234,
-  //     "companyLongitude": -122.401416,
-  //     "companyEmail": "info@techsolutions.com",
-  //     "companyJoinDate": "2015-05-20",
-  //     "companySalary": "50000",
-  //     "companyEmployeeId": "EMP001",
-  //     "loanAmount": "100000",
-  //     "loanDuration": "6",
-  //     "loanInterestRatePct": "10",
-  //     "loanStatus": "Approved",
-  //     "loanStartDate": "2022-01-01",
-  //     "loanEndDate": "2022-06-01",
-  //     "processingCharges": "500",
-  //     "processingChargesPct": "5",
-  //     "dailyEMI": "1000",
-  //     "bankAcctName": "John Doe",
-  //     "bankAcctNum": "1234567890",
-  //     "bankIfsc": "ABCD0123456",
-  //     "bankName": "Example Bank",
-  //     "panNum": "THBERG53UmFYZzg3Z3hhSTNWVzNrdz09",
-  //     "panName": "John Doe",
-  //     "panImgUrl": "https://5.imimg.com/data5/SB/WU/KT/ANDROID-33737889/product-jpeg-500x500.jpg",
-  //     "aadhaarNum": "123456789012",
-  //     "aadhaarName": "John Doe",
-  //     "aadhaarDOB": "01-01-1990",
-  //     "aadhaarAddress": "123, Example Street, City, Country",
-  //     "aadhaarImage": "https://5.imimg.com/data5/SB/WU/KT/ANDROID-33737889/product-jpeg-500x500.jpg",
-  //     "aadhaarFrontImgUrl": "https://5.imimg.com/data5/SB/WU/KT/ANDROID-33737889/product-jpeg-500x500.jpg",
-  //     "aadhaarBackImgUrl": "https://5.imimg.com/data5/SB/WU/KT/ANDROID-33737889/product-jpeg-500x500.jpg",
-  //     "profilePicUrl": "https://5.imimg.com/data5/SB/WU/KT/ANDROID-33737889/product-jpeg-500x500.jpg",
-  //     "salarySlip": [
-  //         "https://www.ucl.ac.uk/students/sites/students/files/example-bank-statement_1_0.pdf",
-  //         "https://www.ucl.ac.uk/students/sites/students/files/example-bank-statement_1_0.pdf",
-  //         "https://www.ucl.ac.uk/students/sites/students/files/example-bank-statement_1_0.pdf"
-  //     ],
-  //     "bankStatement": "https://www.ucl.ac.uk/students/sites/students/files/example-bank-statement_1_0.pdf",
-  //     "companyIdPhoto": "https://5.imimg.com/data5/SB/WU/KT/ANDROID-33737889/product-jpeg-500x500.jpg"
-
-  //   }
-  //   ]);
   const [currentAddress, setCurrentAddress] = useState("");
   const [permanentAddress, setPermanentAddress] = useState("");
   const [companyAddress, setCompanyAddress] = useState("");
@@ -145,7 +58,6 @@ const Home = ({ navigation, route }: { navigation: any, route: any }) => {
 
   useEffect(() => {
     if (route?.params?.fileUri) {
-      console.log(route?.params?.fileUri)
       setUserPhotoURL(route?.params?.fileUri)
       setUserPhotoCaptured(true)
     }
@@ -179,7 +91,6 @@ const Home = ({ navigation, route }: { navigation: any, route: any }) => {
 
   const getDetails = async () => {
     try {
-      console.log(roleId, searchPhone, apiKey)
       if (searchPhone !== null && searchPhone !== undefined && searchPhone.length == 10) {
         await fetch(`http://192.168.1.7:6500/business/getAgentVerifyLoans`, {
           method: 'POST',
@@ -194,7 +105,6 @@ const Home = ({ navigation, route }: { navigation: any, route: any }) => {
         })
           .then((response) => response.json())
           .then((responseData) => {
-            console.log(responseData)
             if (responseData.Success) {
               Keyboard.dismiss();
               setLoanData([responseData.Success])
@@ -246,7 +156,6 @@ const Home = ({ navigation, route }: { navigation: any, route: any }) => {
               ToastAndroid.show("Failed to upload Loan", 3)
 
             }
-            console.log(responseData)
           }).catch(err => console.log(err))
       }
     } catch (err) {
@@ -265,7 +174,6 @@ const Home = ({ navigation, route }: { navigation: any, route: any }) => {
         setLocationPermission(true);
       }
       let location = await Location.getCurrentPositionAsync({});
-      console.log(location);
     } catch (err) {
       console.log(err)
     }
@@ -353,7 +261,6 @@ const Home = ({ navigation, route }: { navigation: any, route: any }) => {
   }
 
   const renderInput = () => {
-    console.log("loanData?.length > 0", loanData?.length > 0)
     if (loanData?.length > 0) {
       return (
         <ScrollView ref={scrollViewRef} contentContainerStyle={{ flexGrow: 1 }} style={{ marginBottom: 150 }}>
@@ -460,7 +367,7 @@ const Home = ({ navigation, route }: { navigation: any, route: any }) => {
               label="Company Address"
               lines={5}
             />
-            <View>
+            {/* <View>
               <Text style={{ ...theme.FONTS.Mulish_600SemiBold }}>Company Location</Text>
               <Pressable style={{
                 marginTop: 10,
@@ -469,7 +376,7 @@ const Home = ({ navigation, route }: { navigation: any, route: any }) => {
                 borderRadius: 5,
                 width: 150,
               }} onPress={() => { Linking.openURL("https://www.google.com/maps/search/?api=1&query=" + loanData[0].companyLatitude + "," + loanData[0].companyLongitude) }}><Text style={{ color: "white", textAlign: "center" }}>Open Map</Text></Pressable>
-            </View>
+            </View> */}
             <InputField
               value={loanData[0].companyEmail}
               placeholder="Company Email"

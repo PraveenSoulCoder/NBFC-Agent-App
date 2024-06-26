@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { View, Text, Dimensions, TouchableOpacity, Image, TextInput, Keyboard, ToastAndroid, BackHandler } from "react-native";
+import { View, Text, Dimensions, TouchableOpacity, Image, TextInput, Keyboard, ToastAndroid } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { theme } from "../constants/theme";
 import * as Location from 'expo-location';
@@ -27,7 +27,6 @@ const Home1 = ({ navigation, route }: { navigation: any, route: any }) => {
     const [userDetails, setUserDetails] = useState({});
     const [workDetails, setWorkDetails] = useState({});
 
-    const [locationPermission, setLocationPermission] = useState(false);
     const [updateButton, setUpdateButton] = useState(false)
 
 
@@ -76,7 +75,6 @@ const Home1 = ({ navigation, route }: { navigation: any, route: any }) => {
         async function getasync() {
             try {
                 const userName = await AsyncStorage.getItem('userName');
-                console.log("userName", userName)
                 if (userName !== null) {
                     setUserName(userName);
                 }
@@ -94,25 +92,10 @@ const Home1 = ({ navigation, route }: { navigation: any, route: any }) => {
             }
         }
         getasync();
-        console.log("home page data :", userName, roleId, apiKey)
         getLocationPermission();
     }, []);
 
-    // useEffect(() => {
-    //     const unsubscribe = navigation.addListener("focus", () => {
-    //         if (searchPhone.length === 10) {
-    //             console.log("navigation listener is working")
-    //             getDetails();
-    //         } else {
-    //             console.log("search phone length is not 10:", searchPhone)
-    //         }
-    //     });
-
-    //     return unsubscribe;
-    // }, [navigation]);
-
     useEffect(() => {
-        console.log("route listener is working",searchPhone)
         if (searchPhone.length === 10) {
             getDetails();
         }
@@ -123,10 +106,9 @@ const Home1 = ({ navigation, route }: { navigation: any, route: any }) => {
     // overall functions
 
     const getDetails = async () => {
-        console.log("parameters :", roleId, searchPhone, apiKey)
         try {
             if (searchPhone !== null && searchPhone !== undefined && searchPhone.length == 10) {
-                await fetch(`http://65.1.100.95:6500/business/getAgentVerifyLoans`, {
+                await fetch(`http://192.168.1.7:6500/business/getAgentVerifyLoans`, {
                     method: 'POST',
                     headers: {
                         Accept: 'application/json',
@@ -142,7 +124,6 @@ const Home1 = ({ navigation, route }: { navigation: any, route: any }) => {
                         Keyboard.dismiss();
 
                         if (responseData.Success) {
-                            console.log("Response data of get details is working", responseData )
 
                             const extractedUserDetails = {
                                 currentCity: responseData.Success.currentCity,
@@ -238,25 +219,17 @@ const Home1 = ({ navigation, route }: { navigation: any, route: any }) => {
                     }).catch(err => console.log(err))
             }
         } catch (err) {
-            setLocationPermission(false);
             console.log(err)
         }
     }
 
     const verifyData = async () => {
-        console.log("payload of the :", {
-            apiKey: "M2hZZytlZU1vL3h0aWR2TXVoOUFhdTV1RmNRaWVnaGYxZ0Vpb0hBVmFKbz",
-            roleId: userDetails?.roleId,
-            loanId: userDetails?.loanId,
-            status: "DOCUMENT_SUBMITTED",
-            subject: notes.subject,
-            body: notes.body,
-        })
+    
         setUpdateButton(true)
         try {
             const apiKey = await AsyncStorage.getItem('apikey');
             if (apiKey !== null && submit == false) {
-                await fetch(`http://65.1.100.95:6500/business/updateAgentVerify`, {
+                await fetch(`http://192.168.1.7:6500/business/updateAgentVerify`, {
                     method: 'POST',
                     headers: {
                         Accept: 'application/json',
@@ -274,7 +247,6 @@ const Home1 = ({ navigation, route }: { navigation: any, route: any }) => {
                     .then((response) => response.json())
                     .then((responseData) => {
                         setNotesModal(false)
-                        console.log("Response of the verify details of the user:", responseData)
                         if (responseData.Success) {
                             ToastAndroid.show("User Verified Successfully", 3)
                             getDetails()
@@ -290,13 +262,9 @@ const Home1 = ({ navigation, route }: { navigation: any, route: any }) => {
         try {
             let { status } = await Location.requestForegroundPermissionsAsync();
             if (status !== 'granted') {
-                setLocationPermission(false);
                 return;
-            } else {
-                setLocationPermission(true);
             }
-            let location = await Location.getCurrentPositionAsync({});
-            console.log(location);
+
         } catch (err) {
             console.log(err)
         }

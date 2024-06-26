@@ -26,7 +26,6 @@ const PermissionModal = ({
   
 
   const permissionCloseModal = () => {
-    console.log("permissionCloseModal");
     Animated.timing(permissionFadeAnim, {
       toValue: 0,
       duration: 400,
@@ -59,7 +58,6 @@ const PermissionModal = ({
   }, [visible]);
 
   const openSettings = () => {
-    console.log("openSettings");
     closeModal();
     Linking.openSettings();
   };

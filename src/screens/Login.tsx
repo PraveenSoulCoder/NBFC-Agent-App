@@ -1,13 +1,11 @@
 import {
   View,
-  TouchableOpacity,
-  Image,
   ImageBackground,
   Text,
   Dimensions,
   Pressable,
   StyleSheet,
-  StatusBar,
+  ToastAndroid,
   BackHandler,
 } from "react-native";
 import { ScrollView, TextInput } from "react-native-gesture-handler";
@@ -79,34 +77,6 @@ const Login: React.FC = ({ navigation, route }: any) => {
   }, []);
   async function isPhoneAvaliable(myNumber: any) {
     setPhoneNumber(myNumber);
-    // if (
-    //   myNumber !== undefined &&
-    //   myNumber !== null &&
-    //   myNumber.length >= 10 &&
-    //   !isNaN(myNumber)
-    // ) {
-    //   await fetch(
-    //     "http://ec2-15-207-121-220.ap-south-1.compute.amazonaws.com:1234/business/isPhoneRegistered?businessPhone=" +
-    //       myNumber +
-    //       ""
-    //   )
-    //     .then((response) => response.json())
-    //     .then((json) => {
-    //       if (json.exists !== "yes") {
-    //         setIsPhone(true);
-    //         setRegButton(true);
-    //         setTimeout(() => {
-    //           setIsPhone(false);
-    //         }, 3000);
-    //       } else {
-    //         setIsPhone(false);
-    //         setRegButton(false);
-    //       }
-    //     })
-    //     .catch((error) => {
-    //       console.error(error);
-    //     });
-    // }
   }
   const storeData = async (roleId:any,apiKey: any,userName:any) => {
     try {
@@ -136,7 +106,7 @@ const Login: React.FC = ({ navigation, route }: any) => {
         ) {
           setUserErrorMessage(false);
           // navigation.navigate("Home");
-          await fetch("http://65.1.100.95:6500/business/loginRole", {
+          await fetch("http://192.168.1.7:6500/business/loginRole", {
             method: "POST",
             headers: {
               Accept: "application/json",
@@ -156,6 +126,8 @@ const Login: React.FC = ({ navigation, route }: any) => {
                 var userName = responseData?.Success?.user[0]?.userName;
                 console.log(apiKey);
                 storeData(roleId,apiKey,userName);
+              }else{
+                ToastAndroid.show("Invalid Agent Details", 3)
               }
               console.log(responseData);
               // if (responseData.apiKey) {

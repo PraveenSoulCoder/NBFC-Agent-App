@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, Image, BackHandler, StatusBar, Platform, Linking, TouchableOpacity } from "react-native";
+import { View, Text, ScrollView, Image,StatusBar, TouchableOpacity } from "react-native";
 import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -10,7 +10,6 @@ import LogOutSvg from "../svg/LogOutSvg";
 const Profile: React.FC = ({ navigation }: any) => {
   const [userName, setUserName] = useState("");
   const [userPhoto, setUserPhoto] = useState("");
-  const [userPhone, setUserPhone] = useState("");
   const [photoShow, setPhotoShow] = useState(false);
   const [loading, setLoading] = useState(true);
   const [roleId, setRoleId] = useState("");

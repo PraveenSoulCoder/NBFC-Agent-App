@@ -1,14 +1,19 @@
 import React, { useState, useEffect } from "react";
 import "../styles/Home.css";
-import { Check2Circle, PersonCircle, PersonExclamation, PersonVcard } from "react-bootstrap-icons";
+import { useNavigate } from "react-router-dom";
+import { Briefcase, Check2Circle, FileEarmark, FileEarmarkText, PersonCircle, PersonExclamation, PersonVcard, XCircle } from "react-bootstrap-icons";
+import ModalComponent from "../components/modalComponent";
 
 const Home = ({ route }) => {
+    const navigate = useNavigate();
     const [searchPhone, setSearchPhone] = useState("");
     const [userDetails, setUserDetails] = useState({});
     const [workDetails, setWorkDetails] = useState({});
     const [roleId, setRoleId] = useState("AG1719396582446");
     const [apiKey, setApiKey] = useState("M2hZZytlZU1vL3h0aWR2TXVoOUFhdTV1RmNRaWVnaGYxZ0Vpb0hBVmFKbz");
     const [userFound, setUserFound] = useState(false);
+    const [notesModal, setNotesModal] = useState(false);
+    const [notes, setNotes] = useState({ subject: "Overview", body: "All the details are correct and verified" })
 
     const submit = (
         !userDetails.houseLon || userDetails.houseLon.length <= 0 ||
@@ -148,6 +153,11 @@ const Home = ({ route }) => {
         }
     }
 
+    const handleModalData = (data) => {
+        setNotes({ ...notes, body: data });
+        console.log('Received data from modal:', notes.body);
+    };
+
     return (
         <div className="Home-main">
             <div className="Home-container">
@@ -165,25 +175,54 @@ const Home = ({ route }) => {
                         {userFound || true ?
                             <>
                                 <div className="Home-Verification-check-container">
-                                    <div className="Home-Verification-checks">
+                                    <div className="Home-Verification-checks" onClick={() => navigate("/userInfo")}>
                                         <div className="Home-Verification-content">
-                                            <PersonVcard size={20}/>
+                                            <PersonVcard size={25} />
                                             <p>User Details</p>
                                         </div>
-                                        <Check2Circle size={35} />
-
+                                        {userDetails.houseLon && userDetails.houseLat && userDetails.housePhoto && userDetails.userPicture ?
+                                            <Check2Circle size={35} color="lightgreen" /> :
+                                            <span className="Home-Verification-uncheck" />
+                                        }
                                     </div>
+
+                                    <div className="Home-Verification-checks">
+                                        <div className="Home-Verification-content">
+                                            <Briefcase size={25} />
+                                            <p>Work Details</p>
+                                        </div>
+                                        {workDetails.companyLon && workDetails.companyLat && workDetails.companyPhoto ?
+                                            <Check2Circle size={35} color="lightgreen" /> :
+                                            <span className="Home-Verification-uncheck" />
+                                        }
+                                    </div>
+
+                                    <div className="Home-Verification-checks">
+                                        <div className="Home-Verification-content">
+                                            <FileEarmarkText size={25} />
+                                            <p>Document Details</p>
+                                        </div>
+                                        {userDetails.panPhoto && userDetails.aadhaarPhoto ?
+                                            <Check2Circle size={35} color="lightgreen" /> :
+                                            <span className="Home-Verification-uncheck" />
+                                        }
+                                    </div>
+
                                 </div>
 
-                                <button></button>
+                                <button disabled={submit} style={{ opacity: submit ? 0.5 : 1 }} className="Home-Verification-submit">Subbmit</button>
+
+
                             </> :
                             <p>no data</p>
 
                         }
                     </div>
+
                 </div>
 
             </div>
+            <ModalComponent notesModal={notesModal} setNotesModal={setNotesModal} handleData={handleModalData} />
         </div>
     )
 };

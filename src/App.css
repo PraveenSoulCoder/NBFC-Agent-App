@@ -13,3 +13,10 @@ body {
 p {
     margin: 0;
 }
+
+.Verification-submit-container{
+    display: flex;
+    justify-content: end;
+    /* width: 100%; */
+    padding: 20px;
+}

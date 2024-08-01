@@ -1,0 +1,82 @@
+/* ModalComponent.css */
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    z-index: 1000;
+}
+
+.overlay.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.overlay-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: transparent;
+}
+
+.modal-content {
+    position: absolute;
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+    z-index: 100;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-title {
+    font-family: 'Mulish', sans-serif;
+    font-weight: 600;
+    font-size: 17px;
+    margin-bottom: 15px;
+}
+
+.radio-group {
+    display: flex;
+    margin-bottom: 15px;
+}
+
+.radio-option {
+    margin-right: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.notes-textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    margin-bottom: 15px; 
+    height: 90px;
+}
+
+.proceed-button {
+    background-color: var(--primary-color);
+    color: white;
+    border-radius: 10px;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    align-self: flex-end;
+}

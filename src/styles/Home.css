@@ -1,0 +1,100 @@
+@import url('https://fonts.googleapis.com/css2?family=Mulish:wght@400;700&display=swap');
+
+:root {
+    --primary-color: #E50914;
+    --secondary-color: #ffffff;
+
+    --font-size-large: 30px;
+    --font-size-medium: 20px;
+    --font-size-small: 15px;
+}
+
+.Home-main{
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--secondary-color);
+}
+
+.Home-container{
+    width: 100%;
+    height: 100%;
+
+}
+
+.Home-nav{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    background-color: var(--primary-color);
+    color: #fff;
+    padding: 20px 0;
+    border-radius:  0 0 30px 30px;
+}
+
+.Home-nav p{
+    font-size: var(--font-size-medium);
+    font-weight: bold;
+}
+
+.Home-input-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px 0px;
+    gap:10px
+}
+
+.Home-input{
+    width: 80%;
+    height: 40px;
+    border-radius: 5px;
+    border: 1px solid #000;
+    padding: 0 10px;
+    font-size: var(--font-size-small);
+}
+
+.Home-Verification-container{
+    display: flex;
+    justify-content: center;
+}
+
+.Home-Verification-wrapper{
+    width: 95%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background-color: #f7ebec;
+}
+
+.Home-Verification-heading{
+    font-size: var(--font-size-medium);
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.Home-Verification-check-container{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+}
+
+.Home-Verification-content{
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    font-size: var(--font-size-small);
+}
+
+.Home-Verification-checks{
+    width: 95%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: none;
+    background-color: var(--secondary-color);
+    padding: 15px;
+}
